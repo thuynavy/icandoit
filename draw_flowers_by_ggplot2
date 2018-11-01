@@ -1,0 +1,104 @@
+# DRAW FLOWERS USING MATHEMATICS IN R WITH GGPLOT2
+
+
+# Step 1: Drawing 50 points on a circle
+
+# Set plot images to a nice size
+options(repr.plot.width = 4, repr.plot.height = 4)
+library(ggplot2)
+
+# Start by drawing 50 points on a circle of radius 1. As every (x, y) point should be in the unit circle, it follows that x² + y² = 1. We can get this using the superfamous Pythagorean trigonometric identity which states that sin²(θ) + cos²(θ) = 1 for any real number θ.
+
+t <- seq(0, 2*pi, length.out = 50)
+x <- sin(t)
+y <- cos(t)
+df <- data.frame(t, x, y)
+
+# Make a scatter plot of points in a circle
+p <- ggplot(df, aes(x, y))
+p + geom_point()
+
+
+# Step 2: Make it harmonious with the Golden Age
+
+# Golden Angle = π(3 − √5). This number is inspired by the Golden Ratio, one of the most famous numbers in the history of mathematics.
+
+# Defining the number of points
+points <- 500
+
+# Defining the Golden Angle
+angle <- pi*(3-sqrt(5))
+t <- (1:points) * angle
+x <- sin(t)
+y <- cos(t)
+df <- data.frame(t, x, y)
+
+# Make a scatter plot of points in a spiral
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point()
+
+
+# Step 3: Remove background, grid, ticks, title and text
+
+df <- data.frame(t, x, y)
+
+# Make a scatter plot of points in a spiral
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point() + theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+
+
+# Step 4: A bit of makeup: size, color and transparency
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(size = 8, alpha = 0.5, color = "darkgreen") + theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+
+
+# Step 5: Play with aesthetics: the dandelion
+
+# The resulting image should remind you of a dandelion
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(aes(size = t), pch = 8, alpha = 0.5, color = "black") + theme(panel.background = element_rect(fill="white"), legend.position = "none", panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+               
+
+# Step 6: Create a sunflower with another background color
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(aes(size = t), pch = 17, alpha = 0.5, color = "yellow") + theme(panel.background = element_rect(fill="darkmagenta"), legend.position = "none", panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+
+
+# Step 7: Modify the angle to generate a different image
+
+angle <- 2.0
+points <- 1000
+
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(aes(size = t), pch = 17, alpha = 0.5, color = "yellow") + theme(panel.background = element_rect(fill="darkmagenta"), legend.position = "none", panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+
+
+# Final step: Create an imaginary flower
+
+angle <- 13*pi/180
+points <- 2000
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(aes(size = 80), pch = 1, alpha = 0.1, color = "magenta4") + theme(panel.background = element_rect(fill="white"), legend.position = "none", panel.grid = element_blank(), axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank())
+
+
+
+                        
+              
+                        
+                        
+                    
+                        
+                        
+                        
