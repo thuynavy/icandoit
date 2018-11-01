@@ -1,0 +1,46 @@
+# DATASET @ https://github.com/datacamp/projects-discovery-of-handwashing-r/blob/master/datasets/monthly_deaths.csv
+
+library(tidyverse)
+yearly <- read_csv("datasets/yearly_deaths_by_clinic.csv")
+
+# The alarming number of deaths
+yearly <- mutate(yearly, proportion_deaths = deaths/births)
+yearly
+
+# Death patterns of two different clinics
+options(repr.plot.width=7, repr.plot.height=4)
+ggplot(yearly, aes(x = year, y = proportion_deaths, color = clinic)) + geom_line()
+
+# The handwashing begins
+monthly <- read_csv("datasets/monthly_deaths.csv")
+monthly <- mutate(monthly, proportion_deaths = deaths/births)
+head(monthly)
+
+# Plot to see the effect of handwashing
+ggplot(monthly, aes(proportion_deaths, date)) + labs(x = "Death rate", y = "Year")
+
+# The effect of handwashing highlighted
+# From this date handwashing was made mandatory
+handwashing_start = as.Date('1847-06-01')
+monthly <- monthly %>% mutate(handwashing_started = date >= handwashing_start)
+ggplot(monthly, aes(date, proportion_deaths, color = handwashing_started)) + labs(x = "Year", y = "Death rate")
+
+# Hypothesis: more handwashing = fewer deaths?
+# Calculating the mean proportion of deaths before and after handwashing
+monthly_summary <- monthly %>% group_by(handwashing_started) %>% summarise(mean_proportion_deaths = mean(proportion_deaths)) 
+monthly_summary
+
+# RESULTS
+# handwashing_started	mean_proportion_deaths
+# FALSE	              0.10504998
+# TRUE	              0.02109338
+# It reduced the proportion of deaths by around 8 percentage points!
+
+# A statistical analysis of Semmelweis handwashing data
+# Calculating a 95% Confidence intrerval using t.test 
+test_result <- t.test(proportion_deaths ~ handwashing_started, data = monthly)
+test_result
+# That the doctors didn't wash their hands increased the proportion of deaths by between 6.7 and 10 percentage points, according to a 95% confidence interval
+
+# (A very obvious) Conclusion
+doctors_should_wash_their_hands <- TRUE
